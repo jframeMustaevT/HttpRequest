@@ -1,10 +1,7 @@
 package part01.lessson06.task06;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -37,9 +34,13 @@ public class HttpSocket {
                 PrintWriter out = new PrintWriter(remote.getOutputStream());
 
                 //read the data sent
-                String str = ".";
-                while (!str.equals(""))
-                    str = in.readLine();
+                String str = in.readLine();
+                if (str.contains("GET")) {
+                    out.write("HTTP/1.1");
+                }else  {
+                    out.write("HTTP/1.1 Error 404 not found");
+                    System.out.println("Invalid request Enter GET request");
+                }
 
                 //Send the response
                 out.println("HTTP/1.1");
@@ -48,6 +49,8 @@ public class HttpSocket {
                 out.println();
                 out.println("<H1>SimpleHttpSocket- Innopolis</H1>");
                 out.flush();
+                System.out.println(in.readLine());
+
             } catch (Exception ex) {
                 System.out.println("Error 404 not found" + ex.getMessage());
             }
